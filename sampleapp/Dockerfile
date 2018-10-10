@@ -5,6 +5,10 @@ WORKDIR /
 # Copy the directory contents into the container at /
 COPY . /
 
+ENV EH_CONN_STRING tbd1
+ENV BLOB_ST_CONN_STRING tbd2
+ENV BUILD_NAME tbd3
+
 RUN pip install -r requirements.txt
 RUN python hellotest.py
 
