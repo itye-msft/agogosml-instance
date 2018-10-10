@@ -13,7 +13,7 @@ jobs:
     registerName: agogosacr.azurecr.io
     spName: '98a60d8a-cd03-44cb-9367-f19ab0d98b8d'
   steps:
-  - script: docker build -f Dockerfile -t $(registerName)/$(imageName) .
+  - script: docker build -f sampleapp/Dockerfile -t $(registerName)/$(imageName) .
     displayName: 'docker build'
   - script: |
       docker login $(registerName) -u $(spName) -p $(spPassword)
