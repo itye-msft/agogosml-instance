@@ -12,6 +12,18 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+# base64 encoded test strings
+env:
+  EH_CONN_STRING: "aGkx"
+  BLOB_ST_CONN_STRING: "aGky"
+  BUILD_NAME: "aGkz" 
+  AZURE_STORAGE_ACCOUNT: "aGkx"
+  AZURE_STORAGE_ACCESS_KEY: "aGkx"
+  EVENT_HUB_NAMESPACE: "aGkx"
+  EVENT_HUB_NAME: "aGkx"
+  EVENT_HUB_SAS_POLICY: "aGkx"
+  EVENT_HUB_SAS_KEY: "aGkx"
+
 service:
   type: ClusterIP
   port: 80
