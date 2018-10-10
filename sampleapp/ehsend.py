@@ -1,11 +1,5 @@
 #!/usr/bin/env python
 
-"""
-An example to show sending events to an Event Hub partition.
-"""
-
-# pylint: disable=C0111
-
 import sys
 import logging
 import datetime
