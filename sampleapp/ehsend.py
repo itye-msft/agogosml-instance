@@ -10,14 +10,8 @@ import dotenv
 
 from azure.eventhub import EventHubClient, Sender, EventData
 
-# import examples
-
 def main():
     logger = logging.getLogger(__name__)
-    # Address can be in either of these formats:
-    # "amqps://<URL-encoded-SAS-policy>:<URL-encoded-SAS-key>@<mynamespace>.servicebus.windows.net/myeventhub"
-    # "amqps://<mynamespace>.servicebus.windows.net/myeventhub"
-    # ADDRESS = os.environ.get('EVENT_HUB_ADDRESS')
 
     NAMESPACE = os.environ['EVENT_HUB_NAMESPACE']
     EHNAME = os.environ['EVENT_HUB_NAME']
