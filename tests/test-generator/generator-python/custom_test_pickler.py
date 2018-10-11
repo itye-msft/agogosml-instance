@@ -1,5 +1,5 @@
 import pickle
-import test_sub_custom as t
+import test_sub_custom_one as t
 import inspect
 '''
 This module pickles your custom test module. It introspects to discover all test classes
