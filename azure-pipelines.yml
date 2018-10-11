@@ -1,0 +1,75 @@
+# Docker image
+# Build a Docker image to deploy, run, or push to a container registry.
+# Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+# These variables rely on variables setup in Azure DevOps.
+# This can be accomplished using Variable Groups
+variables:
+  registryName: '$(image_registry)'
+  imageTag: '$(Build.BuildNumber)'
+  appImageName: '$(registryName)/$(app_image_name):$(imageTag)'
+  testImageName: '$(registryName)/$(test_image_name):$(imageTag)'
+  SubscriptionEndpointName: '$(arm_endpoint_name)'
+  appDirectory: '$(app_directory)'
+  testDirectory: '$(test_directory)'
+
+# Build number format ie 1.0.1
+name: $(major_version).$(minor_version)$(Rev:.r)
+
+steps:
+# Build the application docker image using the Dockerfile in the directory
+- script: docker build -f $(appDirectory)/Dockerfile -t $(appImageName) $(appDirectory)
+  displayName: 'Build app Docker Image'
+# Uncomment when test harness is ready for integration
+# Build the test harness docker image using the Dockerfile in the relevant directory
+# - script: docker build -f $(testDirectory)/Dockerfile -t $(testImageName) .
+#   displayName: 'Build app Docker Image'
+# Install Helm
+- task: HelmInstaller@0
+  displayName: 'Install Helm 2.11.0'
+  inputs:
+    helmVersion: 2.11.0
+    installKubectl: false
+# Uncomment when Helm chart is ready
+# Lint the Helm via the "helm lint" command
+# This assumes that your helm files are in the Charts subdirectory within the app directory
+# - task: Bash@3
+#   displayName: 'Lint Helm'
+#   inputs:
+#     targetType: inline
+#     script: helm lint $(appDirectory)/charts/$(appDirectory)/
+
+# Uncomment when we Subscription Endpoint is configured
+# Login to the Docker registry (or ACR) using the Subscription Endpoint preconfigured at the start
+# - task: Docker@1
+#   displayName: Login
+#   inputs:
+#     # azureSubscriptionEndpoint: $(SubscriptionEndpointName)
+#     azureSubscriptionEndpoint: '$(SubscriptionEndpointName)'
+#     azureContainerRegistry: $(registryName)
+#     command: login
+- script: docker login -u $(docker_username) -p $(docker_password) $(registryName)
+  displayName: "Docker Login"
+# Push the app image to the registry
+- task: Docker@1
+  displayName: 'Push app image'
+  inputs:
+    command: 'push'
+    ImageName: $(appImageName)
+# Uncomment when test image is ready
+# Push the test image to the registry
+# - task: Docker@1
+#   displayName: 'Push test image'
+#   inputs:
+#     command: 'push'
+#     ImageName: $(registryName)/$(testImageName)
+# Uncomment when Helm chart is ready
+# Publish Helm Directory
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Artifact: drop'
+#   inputs:
+#     PathtoPublish: $(appDirectory)/charts/$(appDirectory)/
