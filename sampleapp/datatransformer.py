@@ -5,7 +5,7 @@ Transforms data into the final output data
 import json
 import logging
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 def transform(data):
     """ Applies simple transformation to the data
@@ -18,7 +18,7 @@ def transform(data):
         "stringValue": "abc% - &XYZ"
         }
     """
-    logger.info('Transforming data {}'.format(data))
+    LOGGER.info('Transforming data %s', data)
     parsed_json = json.loads(data)
     parsed_json['intValue'] = parsed_json['intValue'] + 1 # Very simple transform :)
     return json.dumps(parsed_json)

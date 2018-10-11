@@ -4,7 +4,6 @@
 Simple Eventhub data sender
 """
 
-import sys
 import logging
 import datetime
 import time
@@ -14,7 +13,7 @@ import dotenv
 
 from azure.eventhub import EventHubClient, Sender, EventData
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 def main():
     """
@@ -40,7 +39,7 @@ def main():
             start_time = time.time()
             for i in range(100):
                 message = '{ "intValue": ' + str(i) + ' }'
-                logger.info("Sending message: {}".format(message))
+                LOGGER.info("Sending message: %s", message)
                 sender.send(EventData(message))
         except:
             raise
@@ -48,7 +47,7 @@ def main():
             end_time = time.time()
             client.stop()
             run_time = end_time - start_time
-            logger.info("Runtime: {} seconds".format(run_time))
+            LOGGER.info("Runtime: %s seconds", run_time)
 
     except KeyboardInterrupt:
         pass

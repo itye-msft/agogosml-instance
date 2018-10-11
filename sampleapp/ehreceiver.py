@@ -22,7 +22,7 @@ from azure.eventprocessorhost import (
 import datatransformer
 import blobsender
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class EventProcessor(AbstractEventProcessor):
     """
@@ -41,7 +41,7 @@ class EventProcessor(AbstractEventProcessor):
         """
         Called by processor host to initialize the event processor.
         """
-        logger.info("Connection established {}".format(context.partition_id))
+        LOGGER.info("Connection established %s", context.partition_id)
 
 
     async def close_async(self, context, reason):
@@ -50,11 +50,11 @@ class EventProcessor(AbstractEventProcessor):
         :param context: Information about the partition
         :type context: ~azure.eventprocessorhost.PartitionContext
         """
-        logger.info("Connection closed (reason {}, id {}, offset {}, sq_number {})".format(
-            reason,
-            context.partition_id,
-            context.offset,
-            context.sequence_number))
+        LOGGER.info("Connection closed (reason %s, id %s, offset %s, sq_number %s)",\
+            reason,\
+            context.partition_id,\
+            context.offset,\
+            context.sequence_number)
 
 
     async def process_events_async(self, context, messages):
@@ -66,13 +66,13 @@ class EventProcessor(AbstractEventProcessor):
         :param messages: The events to be processed.
         :type messages: list[~azure.eventhub.common.EventData]
         """
-        logger.info("Events processed {}".format(context.sequence_number))
-        logger.info("Message: {}".format(messages))
+        LOGGER.info("Events processed %s", context.sequence_number)
+        LOGGER.info("Message: %s", messages)
         for message in messages:
             body = message.body_as_str()
-            logger.info("MESSAGE BODY: {}".format(body))
+            LOGGER.info("MESSAGE BODY: %s", body)
             transformed_body = datatransformer.transform(body)
-            logger.info("MESSAGE TRANSFORMED BODY: {}".format(transformed_body))
+            LOGGER.info("MESSAGE TRANSFORMED BODY: %s", transformed_body)
             blobsender.uploadblob(transformed_body)
         await context.checkpoint_async()
 
@@ -86,13 +86,14 @@ class EventProcessor(AbstractEventProcessor):
         :type context: ~azure.eventprocessorhost.PartitionContext
         :param error: The error that occured.
         """
-        logger.error("Event Processor Error {!r}".format(error))
+        LOGGER.error("Event Processor Error {%s}, {%s}", error, context)
 
 
 async def wait_and_close(host):
     """
     Run EventProcessorHost indefinetely
     """
+    LOGGER.debug("Host: %s", host)
     while True:
         await asyncio.sleep(1)
 
