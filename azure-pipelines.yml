@@ -23,9 +23,9 @@ steps:
   displayName: 'Build app Docker Image'
 # Install Helm
 - task: HelmInstaller@0
-  displayName: 'Install Helm 2.9.1'
+  displayName: 'Install Helm 2.11.0'
   inputs:
-    helmVersion: 2.9.1
+    helmVersion: 2.11.0
     installKubectl: false
 # Lint the Helm via the "helm lint" command
 # This assumes that your helm files are in the Charts subdirectory within the app directory
@@ -33,7 +33,7 @@ steps:
   displayName: 'Lint Helm'
   inputs:
     targetType: inline
-    script: helm lint $(appDirectory)/$(appDirectory)/
+    script: helm lint $(appDirectory)/charts/$(appDirectory)/
 # Login to the Docker registry (or ACR) using the Subscription Endpoint preconfigured at the start
 - task: Docker@1
   displayName: Login
@@ -57,4 +57,4 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   inputs:
-    PathtoPublish: $(appDirectory)/$(appDirectory)/
+    PathtoPublish: $(appDirectory)/charts/$(appDirectory)/
