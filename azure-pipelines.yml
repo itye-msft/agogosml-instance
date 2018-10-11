@@ -7,19 +7,19 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  appImageName: 'YOUR APP NAME:$(build.buildId)'
-  testImageName: 'YOUR TEST HARNESS NAME:$(build.buildId)'
+  appImageName: '$(app_image_name):$(build.buildId)'
+  testImageName: '$(test_image_name):$(build.buildId)'
   registryName: 'YOUR CONTAINER REGISTRY.azurecr.io'
   SubscriptionEndpointName: 'NAME OF YOUR ENDPOINT'
-  appDirectory: 'APP DIRECTORY WITHOUT TRAILING SLASH'
+  appDirectory: 'sampleapp'
   testDirectory: 'TEST HARNESS DIRECTORY WITHOUT TRAILING SLASH'
 
 steps:
 # Build the application docker image using the Dockerfile in the directory
-- script: docker build -f $(appDirectory)/Dockerfile -t $(registryName)/$(appImageName) .
+- script: docker build -f $(appDirectory)/Dockerfile -t $(appImageName) .
   displayName: 'Build app Docker Image'
 # Build the test harness docker image using the Dockerfile in the relevant directory
-- script: docker build -f $(testDirectory)/Dockerfile -t $(registryName)/$(testImageName) .
+- script: docker build -f $(testDirectory)/Dockerfile -t $(testImageName) .
   displayName: 'Build app Docker Image'
 # Install Helm
 - task: HelmInstaller@0
@@ -29,11 +29,11 @@ steps:
     installKubectl: false
 # Lint the Helm via the "helm lint" command
 # This assumes that your helm files are in the Charts subdirectory within the app directory
-- task: Bash@3
-  displayName: 'Lint Helm'
-  inputs:
-    targetType: inline
-    script: helm lint $(appDirectory)/charts/$(appDirectory)/
+# - task: Bash@3
+#   displayName: 'Lint Helm'
+#   inputs:
+#     targetType: inline
+#     script: helm lint $(appDirectory)/charts/$(appDirectory)/
 # Login to the Docker registry (or ACR) using the Subscription Endpoint preconfigured at the start
 - task: Docker@1
   displayName: Login
