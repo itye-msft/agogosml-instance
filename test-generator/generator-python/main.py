@@ -3,8 +3,7 @@ import os
 import json
 import pickle
 import test_sub_builtIn
-from azure.eventhub import EventHubClient, Sender, EventData
-import IPython
+import of_sub_event_hub
 
 def load_config():
     '''
@@ -78,33 +77,24 @@ def invoke_tests():
         invokes each of the pickled custom tests in turn to get generated test output
         transmits the test output to the configured event hub
     '''
-    NAMESPACE = os.environ['EVENT_HUB_NAMESPACE']
-    EHNAME = os.environ['EVENT_HUB_NAME']
-    ADDRESS = "amqps://" + NAMESPACE + ".servicebus.windows.net/" + EHNAME
-
-    # SAS policy and key are not required if they are encoded in the URL
-    USER = os.environ.get('EVENT_HUB_SAS_POLICY')
-    KEY = os.environ.get('EVENT_HUB_SAS_KEY')
-
-    client = EventHubClient(ADDRESS, debug=False, username=USER, password=KEY)
-    sender = client.add_sender(partition="0")
-    client.run()
 
     loaded_tests = load_tests_from_plugins()
 
-    try:
+    output_formatter = of_sub_event_hub.EventHubOutputFormatter()
+
+    try: 
         for test in loaded_tests:
             instance = test['class']()
             if test['input_type'] == 'plugin':
-                sender.send(EventData(instance.generate()))
+                output_formatter.send(instance.generate())
                 print('Sending message from ' + test['typename'])
             elif test['input_type'] == 'file':
-                sender.send(EventData(instance.generate(test['filename'])))
+                output_formatter.send(instance.generate(test['filename']))
                 print('Sending message from ' + test['typename'] + ', filename: ' + test['filename'])
     except Exception as e:
         raise e       
     finally:
-        client.stop()
+        output_formatter.close()
 
 if __name__ == "__main__":
     invoke_tests()
