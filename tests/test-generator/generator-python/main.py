@@ -4,7 +4,12 @@ import json
 import pickle
 import test_sub_builtIn
 import of_sub_event_hub
-
+import of_sub_kafka
+'''
+The purpose of this program is to generate messages and drop them into a messaging tool.
+The messages are generated based on configuration in config.json. The messaging tool can
+be either Azure Event Hub or Kafka.
+'''
 def load_config():
     '''
     loads the json configuration file
@@ -80,10 +85,14 @@ def invoke_tests():
 
     loaded_tests = load_tests_from_plugins()
 
-    output_formatter = of_sub_event_hub.EventHubOutputFormatter()
+    output_formatter_type = os.environ['OUTPUT_FORMATTER']
+    if output_formatter_type == 'Kafka':
+        output_formatter = of_sub_kafka.KafkaOutputFormatter()
+    else:
+        output_formatter = of_sub_event_hub.EventHubOutputFormatter()
 
     try: 
-        for test in loaded_tests:
+        for test in loaded_tests: 
             instance = test['class']()
             if test['input_type'] == 'plugin':
                 output_formatter.send(instance.generate())
