@@ -27,16 +27,17 @@ Example:
 Navigate to the chart's directory and run:
 
 ```bash
-helm install .
---set env.EVENT_HUB_CONSUMER_GROUP="[value]"
---set env.AZURE_STORAGE_ACCOUNT="[value]"
---set env.AZURE_STORAGE_ACCESS_KEY="[Base64 value]"
---set env.AZURE_STORAGE_CONTAINER="[value]" -
--set env.EVENT_HUB_NAMESPACE="[value]"
---set env.EVENT_HUB_NAME="[value]"
---set env.EVENT_HUB_STORAGE_ACCOUNT="[value]" 
---set env.EVENT_HUB_STORAGE_CONTAINER="[value]" 
---set env.EVENT_HUB_SAS_POLICY="[value]"
+helm install .\
+--set env.EVENT_HUB_CONSUMER_GROUP="[value]"\
+--set env.AZURE_STORAGE_ACCOUNT="[value]"\
+--set env.AZURE_STORAGE_ACCESS_KEY="[Base64 value]"\
+--set env.AZURE_STORAGE_CONTAINER="[value]"\
+--set env.EVENT_HUB_NAMESPACE="[value]"\
+--set env.EVENT_HUB_NAME="[value]"\
+--set env.EVENT_HUB_STORAGE_ACCOUNT="[value]"\
+--set env.EVENT_HUB_STORAGE_CONTAINER="[value]"\
+--set env.EVENT_HUB_SAS_POLICY="[value]"\
 --set env.EVENT_HUB_SAS_KEY="[Base64 value]"
 ```
+
 Notice that the secrets are Base64 encoded values
