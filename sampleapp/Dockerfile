@@ -9,5 +9,4 @@ RUN pip install --upgrade pip setuptools
 RUN pip install -r requirements.txt
 RUN python tests.py
 
-
-CMD ["python", "ehreceiver.py"]
+ENTRY ["python", "ehreceiver.py"]

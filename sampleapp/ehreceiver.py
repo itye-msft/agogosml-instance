@@ -121,7 +121,7 @@ def main():
         eh_options = EPHOptions()
         eh_options.release_pump_on_timeout = True
         eh_options.debug_trace = False
-        storage_manager = AzureStorageCheckpointLeaseManager(
+        storage_manager = AzureStorageCheckpointLeaseManager(\
             storage_account_name, storage_key, storage_container_lease)
 
         # Event loop and host
