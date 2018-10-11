@@ -5,7 +5,6 @@ Simple Eventhub data sender
 """
 
 import logging
-import datetime
 import time
 import os
 
