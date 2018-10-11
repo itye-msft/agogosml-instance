@@ -5,6 +5,7 @@ def add_num(x, y):
     return x + y
 
 
+
 if __name__ == '__main__':
     print("These are the passed env vars:")
     print(os.environ['EH_CONN_STRING'])
