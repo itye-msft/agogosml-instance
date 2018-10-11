@@ -9,4 +9,4 @@ RUN pip install --upgrade pip setuptools
 RUN pip install -r requirements.txt
 RUN python tests.py
 
-ENTRY ["python", "ehreceiver.py"]
+ENTRYPOINT ["python", "ehreceiver.py"]
