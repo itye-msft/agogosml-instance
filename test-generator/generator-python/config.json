@@ -1,0 +1,45 @@
+{
+    "name": "python-sample",
+    "plugins": [
+        {
+            "test_sub_custom": "1.0.x"
+        }
+    ],
+    "tests": [
+        {
+            "name": "Sanity Check",
+            "type": "builtin_test",
+            "assembly": "test_sub_builtin",
+            "input": {
+                "type": "file",
+                "filename": "in.json"
+            },
+            "output": "out.json",
+            "outputFormatter": "ConsoleOutputFormatterClass"
+        },
+        {
+            "name": "Double Sanity Check",
+            "type": "CustomTestOne",
+            "assembly": "test_sub_custom",
+            "input": {
+                "type": "plugin"
+            },
+            "output": "out.json",
+            "options": {
+                "auth_token": "1234"
+            }
+        },
+        {
+            "name": "Triple Sanity Check",
+            "type": "CustomTestTwo",
+            "assembly": "test_sub_custom",
+            "input": {
+                "type": "plugin"
+            },
+            "output": "out.json",
+            "options": {
+                "auth_token": "1234"
+            }
+        }
+    ]
+}
