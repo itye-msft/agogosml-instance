@@ -8,7 +8,7 @@
     "tests": [
         {
             "name": "Sanity Check",
-            "type": "builtin_test",
+            "type": "BuiltinTest",
             "assembly": "test_sub_builtin",
             "input": {
                 "type": "file",
