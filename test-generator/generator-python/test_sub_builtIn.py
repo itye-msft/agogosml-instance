@@ -4,7 +4,7 @@ The builtin test class. All custom tests derive from TestBaseClass.
 from test_base_class import TestBaseClass
 import json
 
-class builtin_test(TestBaseClass):
+class BuiltinTest(TestBaseClass):
     '''
     The default test loads output from a provided filename.
     '''
