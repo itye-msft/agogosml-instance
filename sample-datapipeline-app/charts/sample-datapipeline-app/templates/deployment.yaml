@@ -1,0 +1,70 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}
+  labels:
+    app: {{ include "chart.name" . }}
+    chart: {{ include "chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "chart.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "chart.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env: 
+            - name: "AZURE_STORAGE_ACCESS_KEY"
+              valueFrom: 
+                secretKeyRef:
+                  key: AZURE_STORAGE_ACCESS_KEY
+                  name: {{ .Release.Name }}-auth
+            - name: "EVENT_HUB_SAS_KEY"
+              valueFrom: 
+                secretKeyRef:
+                  key: EVENT_HUB_SAS_KEY
+                  name: {{ .Release.Name }}-auth
+            - name: "AZURE_STORAGE_ACCOUNT"
+              value: "{{ .Values.env.AZURE_STORAGE_ACCOUNT }}"
+            - name: "EVENT_HUB_CONSUMER_GROUP"
+              value: "{{ .Values.env.EVENT_HUB_CONSUMER_GROUP }}"
+            - name: "AZURE_STORAGE_CONTAINER"
+              value: "{{ .Values.env.AZURE_STORAGE_CONTAINER }}"
+            - name: "EVENT_HUB_NAMESPACE"
+              value: "{{ .Values.env.EVENT_HUB_NAMESPACE }}"
+            - name: "EVENT_HUB_STORAGE_ACCOUNT"
+              value: "{{ .Values.env.EVENT_HUB_STORAGE_ACCOUNT }}"
+            - name: "EVENT_HUB_STORAGE_CONTAINER"
+              value: "{{ .Values.env.EVENT_HUB_STORAGE_CONTAINER }}"
+            - name: "EVENT_HUB_NAME"
+              value: "{{ .Values.env.EVENT_HUB_NAME }}"
+            - name: "EVENT_HUB_SAS_POLICY"
+              value: "{{ .Values.env.EVENT_HUB_SAS_POLICY }}"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
