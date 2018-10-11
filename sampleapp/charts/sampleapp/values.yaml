@@ -14,15 +14,15 @@ fullnameOverride: ""
 
 # base64 encoded test strings
 env:
-  EH_CONN_STRING: "aGkx"
-  BLOB_ST_CONN_STRING: "aGky"
-  BUILD_NAME: "aGkz" 
-  AZURE_STORAGE_ACCOUNT: "aGkx"
-  AZURE_STORAGE_ACCESS_KEY: "aGkx"
-  EVENT_HUB_NAMESPACE: "aGkx"
-  EVENT_HUB_NAME: "aGkx"
-  EVENT_HUB_SAS_POLICY: "aGkx"
-  EVENT_HUB_SAS_KEY: "aGkx"
+  EH_CONN_STRING: ""
+  BLOB_ST_CONN_STRING: ""
+  BUILD_NAME: "" 
+  AZURE_STORAGE_ACCOUNT: ""
+  AZURE_STORAGE_ACCESS_KEY: ""
+  EVENT_HUB_NAMESPACE: ""
+  EVENT_HUB_NAME: ""
+  EVENT_HUB_SAS_POLICY: ""
+  EVENT_HUB_SAS_KEY: ""
 
 service:
   type: ClusterIP
