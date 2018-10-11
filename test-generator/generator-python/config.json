@@ -20,7 +20,7 @@
         {
             "name": "Double Sanity Check",
             "type": "CustomTestOne",
-            "assembly": "test_sub_custom",
+            "assembly": "test_sub_custom_one",
             "input": {
                 "type": "plugin"
             },
@@ -32,7 +32,19 @@
         {
             "name": "Triple Sanity Check",
             "type": "CustomTestTwo",
-            "assembly": "test_sub_custom",
+            "assembly": "test_sub_custom_one",
+            "input": {
+                "type": "plugin"
+            },
+            "output": "out.json",
+            "options": {
+                "auth_token": "1234"
+            }
+        },
+        {
+            "name": "Hyperspace spanner flobber",
+            "type": "CustomTestThree",
+            "assembly": "test_sub_custom_two",
             "input": {
                 "type": "plugin"
             },

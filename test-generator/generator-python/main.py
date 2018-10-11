@@ -48,7 +48,8 @@ def get_tests_from_configuration(input_type):
             tests_to_return.append(
                 {
                     'input_type': 'plugin', 
-                    'class': [elem for elem in test_classes_in_plugins if elem.__name__ == test_typename][0]
+                    'class': [elem for elem in test_classes_in_plugins if elem.__name__ == test_typename][0],
+                    'typename': test_typename
                 }
             )
         elif (loaded_test['input']['type'] == input_type) and (input_type == 'file'):
@@ -56,7 +57,8 @@ def get_tests_from_configuration(input_type):
                 {
                     'input_type': 'file', 
                     'class': [elem for elem in test_classes_in_plugins if elem.__name__ == test_typename][0],
-                    'filename': loaded_test['input']['filename']
+                    'filename': loaded_test['input']['filename'],
+                    'typename': test_typename
                 }
             )
 
@@ -95,8 +97,10 @@ def invoke_tests():
             instance = test['class']()
             if test['input_type'] == 'plugin':
                 sender.send(EventData(instance.generate()))
+                print('Sending message from ' + test['typename'])
             elif test['input_type'] == 'file':
                 sender.send(EventData(instance.generate(test['filename'])))
+                print('Sending message from ' + test['typename'] + ', filename: ' + test['filename'])
     except Exception as e:
         raise e       
     finally:
