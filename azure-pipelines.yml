@@ -6,21 +6,23 @@
 pool:
   vmImage: 'Ubuntu 16.04'
 
+# These variables rely on variables setup in Azure DevOps.
+# This can be accomplished using Variable Groups
 variables:
-  appImageName: '$(app_image_name):$(build.buildId)'
-  testImageName: '$(test_image_name):$(build.buildId)'
-  registryName: 'YOUR CONTAINER REGISTRY.azurecr.io'
-  SubscriptionEndpointName: 'NAME OF YOUR ENDPOINT'
-  appDirectory: 'sampleapp'
-  testDirectory: 'TEST HARNESS DIRECTORY WITHOUT TRAILING SLASH'
+  registryName: '$(image_registry)'
+  appImageName: '$(registryName)/$(app_image_name):$(build.buildId)'
+  testImageName: '$(registryName)/$(test_image_name):$(build.buildId)'
+  SubscriptionEndpointName: '$(arm_endpoint_name)'
+  appDirectory: '$(app_directory)'
+  testDirectory: '$(test_directory)'
 
 steps:
 # Build the application docker image using the Dockerfile in the directory
 - script: docker build -f $(appDirectory)/Dockerfile -t $(appImageName) .
   displayName: 'Build app Docker Image'
 # Build the test harness docker image using the Dockerfile in the relevant directory
-- script: docker build -f $(testDirectory)/Dockerfile -t $(testImageName) .
-  displayName: 'Build app Docker Image'
+# - script: docker build -f $(testDirectory)/Dockerfile -t $(testImageName) .
+#   displayName: 'Build app Docker Image'
 # Install Helm
 - task: HelmInstaller@0
   displayName: 'Install Helm 2.11.0'
@@ -48,11 +50,11 @@ steps:
     command: 'push'
     ImageName: $(registryName)/$(appImageName)
 # Push the test image to the registry
-- task: Docker@1
-  displayName: 'Push test image'
-  inputs:
-    command: 'push'
-    ImageName: $(registryName)/$(testImageName)
+# - task: Docker@1
+#   displayName: 'Push test image'
+#   inputs:
+#     command: 'push'
+#     ImageName: $(registryName)/$(testImageName)
 # Publish Helm Directory
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
