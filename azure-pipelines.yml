@@ -3,21 +3,16 @@
 # Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
-# Assumptions: 
-#     -You have created a Service Connection in Azure Devops for the Resource Group containing your ACR
-#     -All relevant helm files are in a subdirectory titled "Charts" of the application
-#     -The application and test harness each have their own subdirectory
-
 pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  appImageName: 'mldevopsapp:$(build.buildId)'
-  testImageName: 'mldevopstest:$(build.buildId)'
-  registryName: 'testwsacrbkftipma.azurecr.io'
-  SubscriptionEndpointName: 'ACRConnection'
-  appDirectory: 'sampleapp'
-  testDirectory: 'testHarness'
+  appImageName: 'YOUR APP NAME:$(build.buildId)'
+  testImageName: 'YOUR TEST HARNESS NAME:$(build.buildId)'
+  registryName: 'YOUR CONTAINER REGISTRY.azurecr.io'
+  SubscriptionEndpointName: 'NAME OF YOUR ENDPOINT'
+  appDirectory: 'APP DIRECTORY WITHOUT TRAILING SLASH'
+  testDirectory: 'TEST HARNESS DIRECTORY WITHOUT TRAILING SLASH'
 
 steps:
 # Build the application docker image using the Dockerfile in the directory
@@ -35,7 +30,7 @@ steps:
 # Lint the Helm via the "helm lint" command
 # This assumes that your helm files are in the Charts subdirectory within the app directory
 - task: Bash@3
-  displayName: 'Lint Helm (PLACEHOLDER)'
+  displayName: 'Lint Helm'
   inputs:
     targetType: inline
     script: helm lint $(appDirectory)/$(appDirectory)/
@@ -58,13 +53,6 @@ steps:
   inputs:
     command: 'push'
     ImageName: $(registryName)/$(testImageName)
-# # Package the Helm files to the staging directory (default location when save is false)
-# - task: HelmDeploy@0
-#   displayName: 'helm package'
-#   inputs:
-#     command: package
-#     chartPath: $(appDirectory)/$(appDirectory)/
-#     save: false
 # Publish Helm Directory
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
