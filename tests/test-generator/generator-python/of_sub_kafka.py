@@ -2,7 +2,6 @@ from pykafka import KafkaClient
 from of_base_class import OutputFormatterBaseClass
 import os
 import json
-import IPython
 
 class KafkaOutputFormatter(OutputFormatterBaseClass):
     def __init__(self):
