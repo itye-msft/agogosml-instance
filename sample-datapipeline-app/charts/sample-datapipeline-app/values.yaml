@@ -4,22 +4,22 @@ image:
   repository: ""
   tag: v1
   pullPolicy: Always
+  pullSecret: ""
 
 nameOverride: ""
 fullnameOverride: ""
 
-# base64 encoded test strings
 env:
   AZURE_STORAGE_ACCOUNT: ""
   EVENT_HUB_CONSUMER_GROUP: ""
   AZURE_STORAGE_CONTAINER: ""
-  AZURE_STORAGE_ACCESS_KEY: ""
+  AZURE_STORAGE_ACCESS_KEY: ""    # base64 encoded
   EVENT_HUB_NAMESPACE: ""
   EVENT_HUB_STORAGE_ACCOUNT: ""
   EVENT_HUB_STORAGE_CONTAINER: ""
   EVENT_HUB_NAME: ""
   EVENT_HUB_SAS_POLICY: ""
-  EVENT_HUB_SAS_KEY: ""
+  EVENT_HUB_SAS_KEY: ""           # base64 encoded
 
 service:
   type: ClusterIP
