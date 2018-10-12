@@ -19,18 +19,20 @@ spec:
         app: {{ include "chart.name" . }}
         release: {{ .Release.Name }}
     spec:
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecret }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env: 
+          env:
             - name: "AZURE_STORAGE_ACCESS_KEY"
-              valueFrom: 
+              valueFrom:
                 secretKeyRef:
                   key: AZURE_STORAGE_ACCESS_KEY
                   name: {{ .Release.Name }}-auth
             - name: "EVENT_HUB_SAS_KEY"
-              valueFrom: 
+              valueFrom:
                 secretKeyRef:
                   key: EVENT_HUB_SAS_KEY
                   name: {{ .Release.Name }}-auth
