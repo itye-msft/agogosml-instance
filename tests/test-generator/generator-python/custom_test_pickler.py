@@ -25,7 +25,7 @@ def remove_non_class_elements_and_pickle(classes_in_module, import_name):
 print('current directory is: ' + os.getcwd())
 print('tests directory exists: %s' % os.path.exists('tests'))
 if os.path.exists('tests'):
-    os.chdir('test-generator\\generator-python')
+    os.chdir('test-generator/generator-python')
 print('current directory is: ' + os.getcwd())
 
 # t1
