@@ -1,3 +1,4 @@
+import os
 import pickle
 import test_sub_custom_one as t1
 import test_sub_custom_two as t2
@@ -20,6 +21,9 @@ def remove_non_class_elements_and_pickle(classes_in_module, import_name):
         if not inspect.isclass(classes_in_module[index]):
             del classes_in_module[index]
     pickle.dump(classes_in_module, open( import_name + ".p", "wb" ))
+
+if os.path.exists('.\\tests'):
+    os.chdir('test-generator\\generator-python')
 
 # t1
 elements_in_t1 = [elem for elem in dir(t1) if elem[0] != '_']
