@@ -1,0 +1,4 @@
+azure-eventhub
+python-dotenv>=0.5.1
+azure-storage-blob
+pykafka
