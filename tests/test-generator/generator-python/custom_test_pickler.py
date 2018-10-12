@@ -22,11 +22,8 @@ def remove_non_class_elements_and_pickle(classes_in_module, import_name):
             del classes_in_module[index]
     pickle.dump(classes_in_module, open( import_name + ".p", "wb" ))
 
-print('current directory is: ' + os.getcwd())
-print('tests directory exists: %s' % os.path.exists('tests'))
 if os.path.exists('tests'):
     os.chdir('tests/test-generator/generator-python')
-print('current directory is: ' + os.getcwd())
 
 # t1
 elements_in_t1 = [elem for elem in dir(t1) if elem[0] != '_']
